@@ -3,7 +3,10 @@ package appewtc.masterung.trainingjoe;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,8 +27,8 @@ public class ServiceActivity extends AppCompatActivity {
             Log.d("14AprilV2", "JSoN ==> " + strJSON);
 
             JSONArray jsonArray = new JSONArray(strJSON);
-            String[] foodStrings = new String[jsonArray.length()];
-            String[] priceStrings = new String[jsonArray.length()];
+            final String[] foodStrings = new String[jsonArray.length()];
+            final String[] priceStrings = new String[jsonArray.length()];
             String[] iconStrings = new String[jsonArray.length()];
 
             for (int i=0;i<jsonArray.length();i++) {
@@ -37,10 +40,21 @@ public class ServiceActivity extends AppCompatActivity {
 
             }   // for
 
+            //Create ListView
             FoodAdapter foodAdapter = new FoodAdapter(ServiceActivity.this,
                     foodStrings, priceStrings, iconStrings);
             ListView listView = (ListView) findViewById(R.id.livFood);
             listView.setAdapter(foodAdapter);
+
+            //Active ListView
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Toast.makeText(ServiceActivity.this,
+                            foodStrings[i] + "\n" + priceStrings[i] + " THB.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
 
         } catch (Exception e) {
             Log.d("14AprilV2", "e Service ==> " + e.toString());
